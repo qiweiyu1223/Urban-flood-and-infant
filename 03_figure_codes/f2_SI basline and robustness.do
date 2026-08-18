@@ -100,7 +100,7 @@ graph twoway ///
     (rspike min95_plot max95_plot x if month == 12, lcolor("204 121 167") lwidth(0.8)) ///
     (scatter estimate_plot x if month == 12,  msymbol(circle) mcolor("204 121 167") mlcolor("204 121 167") mlwidth(medium) msize(3)), ///
     scheme(s1mono) ///
-    title("{bf:Flood occurrence}", size(3.8)) ///
+    title("{bf:Flood occurrence}", size(3.5)) ///
     xtitle("") ///
     ytitle("") ///
     xlabel(3 6 9 12, valuelabel labsize(3.5) angle(0) noticks nogrid) ///
@@ -133,8 +133,8 @@ replace group_value = 2 if parm == "flood_high"
 
 cap drop x_low
 cap drop x_high
-gen double x_low  = x - 0.3 if group_value == 1
-gen double x_high = x + 0.3 if group_value == 2
+gen double x_low  = x - 0.5 if group_value == 1
+gen double x_high = x + 0.5 if group_value == 2
 
 graph twoway ///
     (rspike min95_plot max95_plot x_low if group_value == 1, ///
@@ -148,7 +148,7 @@ graph twoway ///
         msymbol(circle) mcolor("213 94 0") mlcolor("213 94 0") ///
         mlwidth(medium) msize(3)), ///
     scheme(s1mono) ///
-    title("{bf:Positive exposure intensity}", size(3.8)) ///
+    title("{bf:Positive exposure intensity}", size(3.5)) ///
     xtitle("") ///
     ytitle("") ///
     xlabel(3 6 9 12, valuelabel labsize(3.5) angle(0) noticks nogrid) ///
@@ -208,9 +208,9 @@ replace weight_label = "wt_equal_survey" if weight_order == 3
 
 cap drop x_wt
 gen double x_wt = x
-replace x_wt = x - 0.5 if weight_order == 1
+replace x_wt = x - 0.7 if weight_order == 1
 replace x_wt = x        if weight_order == 2
-replace x_wt = x + 0.5 if weight_order == 3
+replace x_wt = x + 0.7 if weight_order == 3
 
 graph twoway ///
     (rspike min95_plot max95_plot x_wt if weight_order == 1, ///
@@ -229,7 +229,7 @@ graph twoway ///
         msymbol(circle) mcolor("0 158 115") mlcolor("0 158 115") ///
         mlwidth(medium) msize(3)), ///
     scheme(s1mono) ///
-    title("{bf:Weighted continuous exposure}", size(3.8)) ///
+    title("{bf:Weighted continuous exposure}", size(3.5)) ///
     xtitle("") ///
     ytitle("") ///
     xlabel(3 6 9 12, valuelabel labsize(3.5) angle(0) noticks nogrid) ///
@@ -260,9 +260,9 @@ graph combine ///
     xsize(16) ///
     ysize(6) ///
     graphregion(margin(0.1) fcolor(white) lcolor(white)) ///
-    iscale(1.2) ///
-    l1title("{bf:Effect on child fever incidence (%)}", size(3.4) margin(r=0.1)) ///
-    b1title("{bf:Flood exposure window (months)}", size(3.4) margin(t=0.1)) ///
+    iscale(1.1) ///
+    l1title("{bf:Association with child fever prevalence}" "(percentage points)", size(4) margin(r=0.1)) ///
+    b1title("{bf:Flood exposure window across model specifications (months)}", size(4) margin(t=0.1)) ///
     name(f2_extra_three, replace)
 
 graph save "`outdir'/f2_extra_three.gph", replace

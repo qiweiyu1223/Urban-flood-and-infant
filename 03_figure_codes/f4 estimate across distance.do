@@ -332,8 +332,8 @@ twoway ///
     xlabel(-5(5)30, angle(0) labsize(2.1) glcolor(gs14)) ///
     yscale(range(-0.8 10.8)) ///
     xscale(range(-5 35)) ///
-    xtitle("Effect on child fever incidence (%)", ///
-        size(2.3) margin(t=1)) ///
+    xtitle("{bf:Association with child fever prevalence}" "(percentage points)", ///
+        size(2) margin(t=1)) ///
     ytitle("") ///
     legend(order(2 4 6) ///
         label(2 "2 groups") ///
@@ -351,7 +351,7 @@ twoway ///
     graphregion(color(white) margin(1 1 1 1)) ///
     plotregion(color(white) lcolor(none) margin(1 1 1 1)) ///
     name(g_main, replace) ///
-    fxsize(48)
+    fxsize(50)
 
 
 *============================================================
@@ -540,7 +540,7 @@ if !_rc {
             text(59 `c_0_10'   "`q4_lab2'", size(1.8) placement(c)) ///
             text(59 `c_10_30'  "`q4_lab3'", size(1.8) placement(c)) ///
             text(59 `c_30plus' "`q4_lab4'", size(1.8) placement(c)) ///
-            ytitle("Percent (%)", size(1.95) margin(r=1)) ///
+            ytitle("Percent (%)", size(1.95) margin(r=0.3)) ///
             xtitle("") ///
             legend(order(1 "Poorest" 2 "Poorer" 3 "Middle" 4 "Richer" 5 "Richest") ///
                 rows(1) ///
@@ -555,8 +555,7 @@ if !_rc {
                 region(lcolor(none) fcolor(none))) ///
             graphregion(color(white) margin(1 1 1 1)) ///
             plotregion(color(white) lcolor(none) margin(1 1 2 1)) ///
-            name(g_wel, replace) ///
-            fysize(82)
+            name(g_wel, replace) fysize(82)
 
     restore
 }
@@ -638,7 +637,7 @@ if !_rc {
             text(72 `c_0_10'   "`q4_lab2'", size(1.8) placement(c)) ///
             text(72 `c_10_30'  "`q4_lab3'", size(1.8) placement(c)) ///
             text(72 `c_30plus' "`q4_lab4'", size(1.8) placement(c)) ///
-            ytitle("Percent (%)", size(1.95) margin(r=1)) ///
+            ytitle("Percent (%)", size(1.95) margin(r=0.3)) ///
             xtitle("") ///
             legend(order(1 "No education" 2 "Primary" 3 "Secondary" 4 "Higher") ///
                 rows(1) ///
@@ -653,8 +652,7 @@ if !_rc {
                 region(lcolor(none) fcolor(none))) ///
             graphregion(color(white) margin(1 1 1 1)) ///
             plotregion(color(white) lcolor(none) margin(1 1 2 1)) ///
-            name(g_edu, replace) ///
-            fysize(82)
+            name(g_edu, replace) fysize(82)
 
     restore
 }
@@ -730,10 +728,10 @@ if `n_infra' > 0 {
         (connected pct dist_q4 if item == "Large household", ///
             lcolor("`c4'") mcolor("`c4'") msymbol(S) msize(vsmall) lwidth(medthin)), ///
         xlabel(1 "`q4_lab1'" 2 "`q4_lab2'" 3 "`q4_lab3'" 4 "`q4_lab4'", ///
-            labsize(1.65)) ///
+            labsize(1.65) angle(25)) ///
         ylabel(, angle(0) labsize(1.65) grid glcolor(gs14)) ///
         xtitle("") ///
-        ytitle("Percent (%)", size(1.95) margin(r=1)) ///
+        ytitle("Percent (%)", size(1.95) margin(r=0.3)) ///
         legend(order(1 "Electricity" 2 "Improved water" ///
                      4 "Large household" 3 "Long water collection") ///
             rows(2) ///
@@ -748,8 +746,7 @@ if `n_infra' > 0 {
             region(lcolor(none) fcolor(none))) ///
         graphregion(color(white) margin(1 1 1 1)) ///
         plotregion(color(white) lcolor(none) margin(1 1 2 1)) ///
-        name(g_infra, replace) ///
-        fysize(88)
+        name(g_infra, replace) fysize(88)
 }
 else {
     di as error "No infrastructure/facility-related variables found."
@@ -926,10 +923,10 @@ else {
             (connected mean dist_q4 if item == "Basic facility", ///
                 lcolor("`c2'") mcolor("`c2'") msymbol(D) msize(vsmall) lwidth(medthin)), ///
             xlabel(1 "`q4_lab1'" 2 "`q4_lab2'" 3 "`q4_lab3'" 4 "`q4_lab4'", ///
-                labsize(1.65)) ///
+                labsize(1.65) angle(25)) ///
             ylabel(, angle(0) labsize(1.65) grid glcolor(gs14)) ///
             xtitle("") ///
-            ytitle("Mean count", size(1.95) margin(r=1)) ///
+            ytitle("Mean count", size(1.95) margin(r=0.3)) ///
 			legend(order( ///
 				1 "Hospital facilities" ///
 				2 "Basic / non-hospital facilities") ///
@@ -945,8 +942,7 @@ else {
                 region(lcolor(none) fcolor(none))) ///
             graphregion(color(white) margin(1 1 1 1)) ///
             plotregion(color(white) lcolor(none) margin(1 1 2 1)) ///
-            name(g_hosp, replace) ///
-            fysize(88)
+            name(g_hosp, replace) fysize(88)
     }
 }
 
@@ -1008,12 +1004,12 @@ else {
 
     graph combine `g_list', ///
         rows(2) ///
-        imargin(0 0 0 0) ///
-        graphregion(margin(0 0 0 0) color(white)) ///
+        imargin(2 2 2 2) ///
+        graphregion(margin(2 2 2 2) color(white)) ///
         name(g_right, replace) ///
-        iscale(1.2) ///
-        xsize(16) ///
-        ysize(11) ///
+        iscale(1.1) ///
+        xsize(20) ///
+        ysize(10) ///
         fxsize(150)
 }
 
@@ -1027,7 +1023,7 @@ graph combine g_main g_right, ///
     imargin(0 0 0 0) ///
     graphregion(margin(0 0 0 0) color(white)) ///
     name(g_final, replace) ///
-    iscale(1.1) ///
+    iscale(1) ///
     xsize(26) ///
     ysize(13)
 
