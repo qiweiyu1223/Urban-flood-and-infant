@@ -136,8 +136,8 @@ graph combine ///
     xsize(20) ysize(8) ///
     graphregion(margin(0.1) fcolor(white) lcolor(white)) ///
     iscale(1) ///
-    l1title("{bf:Coefficient of flood exposure ratio (%)}", size(3.6) margin(r=0.1)) ///
-    b1title("{bf:Flood exposure window across model specifications (months)}", size(3.6) margin(t=0.1)) ///
+    l1title("{bf:Association with child fever prevalence}" "(percentage points)", size(3.8) margin(r=0.1)) ///
+    b1title("{bf:Flood exposure window across model specifications (months)}", size(3.8) margin(t=0.1)) ///
     name(main_8_split, replace)
 
 graph save "$fig/SI_sup/hours_compare.gph", replace

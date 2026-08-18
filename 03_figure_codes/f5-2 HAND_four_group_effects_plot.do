@@ -43,7 +43,7 @@ use "$resultdir/HAND_four_group_effects_long.dta", clear
 *============================================================
 
 *------------------------------------------------------------
-* Panel 1: Mapped water + Low HAND
+* Panel 1: Mapped water and low-lying
 *------------------------------------------------------------
 
 local y_low_has_water_low     0
@@ -51,7 +51,7 @@ local y_high_has_water_low   20
 local y_ticks_has_water_low  "0(5)20"
 
 *------------------------------------------------------------
-* Panel 2: No mapped water + Low HAND
+* Panel 2: No mapped water + low-lying
 *------------------------------------------------------------
 
 local y_low_no_water_low    -300
@@ -59,7 +59,7 @@ local y_high_no_water_low    100
 local y_ticks_no_water_low  "-300(100)100"
 
 *------------------------------------------------------------
-* Panel 3: Mapped water + High HAND
+* Panel 3: Mapped water and not low-lying
 *------------------------------------------------------------
 
 local y_low_has_water_notlow    -100
@@ -67,7 +67,7 @@ local y_high_has_water_notlow    100
 local y_ticks_has_water_notlow  "-100(50)100"
 
 *------------------------------------------------------------
-* Panel 4: No mapped water + High HAND
+* Panel 4: No Mapped water and not low-lying
 *------------------------------------------------------------
 
 local y_low_no_water_notlow    -400
@@ -113,10 +113,10 @@ label values metric_order metric_order_lab
 *------------------------------------------------------------
 * Mapped-water x HAND group order
 *
-* 1. Mapped water + Low HAND
-* 2. No mapped water + Low HAND
-* 3. Mapped water + High HAND
-* 4. No mapped water + High HAND
+* 1. Mapped water and low-lying
+* 2. No mapped water + low-lying
+* 3. Mapped water and not low-lying
+* 4. No Mapped water and not low-lying
 *------------------------------------------------------------
 
 gen byte group_order = .
@@ -134,10 +134,10 @@ replace group_order = 4 ///
     if group_code == "no_water_notlow"
 
 label define group_order_lab ///
-    1 "Mapped water + Low HAND" ///
-    2 "No mapped water + Low HAND" ///
-    3 "Mapped water + High HAND" ///
-    4 "No mapped water + High HAND", replace
+    1 "Mapped water and low-lying" ///
+    2 "No mapped water and low-lying" ///
+    3 "Mapped water and not low-lying" ///
+    4 "No Mapped water and not low-lying", replace
 
 label values group_order group_order_lab
 
@@ -161,19 +161,19 @@ sort metric_order group_order
 **# 2. Color settings
 *============================================================
 
-* Mapped water + Low HAND
+* Mapped water and low-lying
 local col_has_water_low      "166 122 122"
 local out_has_water_low      "116 82 82"
 
-* No mapped water + Low HAND
+* No mapped water + low-lying
 local col_no_water_low       "194 161 123"
 local out_no_water_low       "132 106 78"
 
-* Mapped water + High HAND
+* Mapped water and not low-lying
 local col_has_water_notlow   "126 154 176"
 local out_has_water_notlow   "82 108 130"
 
-* No mapped water + High HAND
+* No Mapped water and not low-lying
 local col_no_water_notlow    "134 160 134"
 local out_no_water_notlow    "88 112 88"
 
@@ -193,13 +193,13 @@ foreach group_id in 1 2 3 4 {
     local panel_y_ticks ""
 
     *--------------------------------------------------------
-    * Panel 1: Mapped water + Low HAND
+    * Panel 1: Mapped water and low-lying
     *--------------------------------------------------------
 
     if `group_id' == 1 {
 
         local group_title ///
-            "{bf:Mapped water + Low HAND}"
+            "{bf:Mapped water and low-lying}"
 
         local group_name ///
             "has_water_low"
@@ -221,13 +221,13 @@ foreach group_id in 1 2 3 4 {
     }
 
     *--------------------------------------------------------
-    * Panel 2: No mapped water + Low HAND
+    * Panel 2: No mapped water + low-lying
     *--------------------------------------------------------
 
     if `group_id' == 2 {
 
         local group_title ///
-            "{bf:No mapped water + Low HAND}"
+            "{bf:No mapped water and low-lying}"
 
         local group_name ///
             "no_water_low"
@@ -249,13 +249,13 @@ foreach group_id in 1 2 3 4 {
     }
 
     *--------------------------------------------------------
-    * Panel 3: Mapped water + High HAND
+    * Panel 3: Mapped water and not low-lying
     *--------------------------------------------------------
 
     if `group_id' == 3 {
 
         local group_title ///
-            "{bf:Mapped water + High HAND}"
+            "{bf:Mapped water and not low-lying}"
 
         local group_name ///
             "has_water_notlow"
@@ -277,13 +277,13 @@ foreach group_id in 1 2 3 4 {
     }
 
     *--------------------------------------------------------
-    * Panel 4: No mapped water + High HAND
+    * Panel 4: No mapped water + not low-lying
     *--------------------------------------------------------
 
     if `group_id' == 4 {
 
         local group_title ///
-            "{bf:No mapped water + High HAND}"
+            "{bf:No mapped water and not low-lying}"
 
         local group_name ///
             "no_water_notlow"
@@ -396,7 +396,7 @@ graph combine ///
         size(2.7) ///
         margin(t=1)) ///
     l1title( ///
-        "{bf:Flood effect on child fever incidence (%)}", ///
+        "{bf:Association with child fever prevalence}" "(percentage points)", ///
         size(2.7) ///
         margin(r=1)) ///
     graphregion( ///

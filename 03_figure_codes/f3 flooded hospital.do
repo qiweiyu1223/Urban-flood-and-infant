@@ -106,8 +106,9 @@ twoway ///
     , ///
     scheme(s1color) ///
     xtitle("") ///
-    ytitle("{bf:Change in child fever incidence (%)}", ///
-        size(2.1) margin(r=0.5)) ///
+    ytitle(    "{bf:Association with child fever prevalence}" ///
+    "(percentage points)" , ///
+        size(2.3) margin(r=0.5)) ///
     xlabel( ///
 		1 "All health facilities" ///
 		2 `""Basic / non-hospital" "facilities""' ///

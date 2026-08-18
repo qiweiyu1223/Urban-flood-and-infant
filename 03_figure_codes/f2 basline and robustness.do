@@ -441,9 +441,9 @@ graph combine ///
     imargin(1 1 1 1) ///
     xsize(16) ysize(9) ///
     graphregion(margin(0.1) fcolor(white) lcolor(white)) ///
-    iscale(0.72) ///
-    l1title("{bf:Coefficient of flood exposure ratio (%)}", size(3.6) margin(r=0.1)) ///
-    b1title("{bf:Flood exposure window across model specifications (months)}", size(3.6) margin(t=0.1)) ///
+    iscale(0.77) ///
+    l1title("{bf:Association with child fever prevalence} (percentage points)", size(3) margin(r=0.1)) ///
+    b1title("{bf:Flood exposure window across model specifications (months)}", size(3) margin(t=0.1)) ///
     name(main_8_split, replace)
 
 graph save "$fig/baseline_alternative/ratio_8_split.gph", replace

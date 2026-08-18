@@ -19,7 +19,7 @@
 *============================================================
 **# 12. Load plotting data
 *============================================================
-
+do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
 use ///
     "$fig_data/SI_fever_other_disease/fever_other_disease_one_model_results.dta", ///
     clear
@@ -324,158 +324,72 @@ local col_stunting ///
 
 
 *============================================================
-**# 22. Horizontal coefficient plot
+**# 22. Vertical coefficient plot
 *============================================================
+
+capture drop x
+gen byte x = 12 - y
+
+*============================================================
+**# 22. Two-panel horizontal coefficient plot
+*============================================================
+
+
+*------------------------------------------------------------
+* Panel A. Acute symptoms
+*------------------------------------------------------------
 
 twoway ///
     ///
-    /* Acute symptoms */ ///
     (rcap min95 max95 y ///
         if group_id == 1, ///
         horizontal ///
-        lcolor("`col_acute'%70") ///
-        lwidth(0.65)) ///
+        lcolor("`col_acute'%85") ///
+        lwidth(0.90)) ///
     ///
     (scatter y estimate ///
         if group_id == 1, ///
         msymbol(circle) ///
-        mcolor("`col_acute'%90") ///
+        mcolor("`col_acute'%95") ///
         mlcolor(white) ///
-        mlwidth(0.30) ///
-        msize(2.6)) ///
-    ///
-    /* Anemia */ ///
-    (rcap min95 max95 y ///
-        if group_id == 2, ///
-        horizontal ///
-        lcolor("`col_anemia'%70") ///
-        lwidth(0.65)) ///
-    ///
-    (scatter y estimate ///
-        if group_id == 2, ///
-        msymbol(circle) ///
-        mcolor("`col_anemia'%90") ///
-        mlcolor(white) ///
-        mlwidth(0.30) ///
-        msize(2.6)) ///
-    ///
-    /* Wasting */ ///
-    (rcap min95 max95 y ///
-        if group_id == 3, ///
-        horizontal ///
-        lcolor("`col_wasting'%70") ///
-        lwidth(0.65)) ///
-    ///
-    (scatter y estimate ///
-        if group_id == 3, ///
-        msymbol(circle) ///
-        mcolor("`col_wasting'%90") ///
-        mlcolor(white) ///
-        mlwidth(0.30) ///
-        msize(2.6)) ///
-    ///
-    /* Underweight */ ///
-    (rcap min95 max95 y ///
-        if group_id == 4, ///
-        horizontal ///
-        lcolor("`col_underweight'%70") ///
-        lwidth(0.65)) ///
-    ///
-    (scatter y estimate ///
-        if group_id == 4, ///
-        msymbol(circle) ///
-        mcolor("`col_underweight'%90") ///
-        mlcolor(white) ///
-        mlwidth(0.30) ///
-        msize(2.6)) ///
-    ///
-    /* Stunting */ ///
-    (rcap min95 max95 y ///
-        if group_id == 5, ///
-        horizontal ///
-        lcolor("`col_stunting'%70") ///
-        lwidth(0.65)) ///
-    ///
-    (scatter y estimate ///
-        if group_id == 5, ///
-        msymbol(circle) ///
-        mcolor("`col_stunting'%90") ///
-        mlcolor(white) ///
-        mlwidth(0.30) ///
-        msize(2.6)) ///
+        mlwidth(0.25) ///
+        msize(2.7)) ///
     ///
     , ///
-    xline(0, ///
-        lpattern(solid) ///
-        lcolor(gs9) ///
-        lwidth(0.40)) ///
     ///
-    yline(8.5 6.5 4.5 2.5, ///
-        lpattern(shortdash) ///
-        lcolor(gs13) ///
-        lwidth(0.30)) ///
+    title( ///
+        "{bf:Acute symptoms}", ///
+        size(3.2) ///
+        margin(b=1)) ///
     ///
     ylabel( ///
         11 "Cough" ///
         10 "Diarrhea" ///
-        9  "ARI" ///
-        8  "Any anemia" ///
-        7  "Severe anemia" ///
-        6  "Wasting" ///
-        5  "Severe wasting" ///
-        4  "Underweight" ///
-        3  "Severe underweight" ///
-        2  "Stunting" ///
-        1  "Severe stunting", ///
+        9  "ARI", ///
         angle(0) ///
-        labsize(2.7) ///
-        nogrid ///
-        noticks) ///
+        labsize(2.8) ///
+        noticks ///
+        nogrid) ///
     ///
-    xlabel(`xleft'(5)`xright', ///
+    xlabel(20(5)40, ///
         angle(0) ///
-        labsize(2.5) ///
+        labsize(3) ///
         format(%9.0f) ///
-        nogrid ///
-        noticks) ///
+        noticks ///
+        glcolor(gs14) ///
+        glwidth(0.25)) ///
     ///
     yscale( ///
-        range(0.4 11.6) ///
-        ) ///
+        range(8.55 11.45) ///
+        noline) ///
     ///
     xscale( ///
-        range(`xleft' `xright') ///
-        ) ///
+        range(20 42) ///
+        noline) ///
     ///
-    xtitle( ///
-        "Adjusted difference in child fever incidence (percentage points)", ///
-        size(2.8) ///
-        margin(t=2)) ///
-    ///
+    xtitle("") ///
     ytitle("") ///
-    ///
-    legend( ///
-        order( ///
-            2  "Acute symptoms" ///
-            4  "Anemia" ///
-            6  "Wasting" ///
-            8  "Underweight" ///
-            10 "Stunting" ///
-        ) ///
-        rows(1) ///
-        position(6) ///
-        ring(1) ///
-        size(2.4) ///
-        symxsize(4) ///
-        symysize(3) ///
-        keygap(0.4) ///
-        colgap(1.2) ///
-        rowgap(0.4) ///
-        region( ///
-            lcolor(none) ///
-            fcolor(none) ///
-        ) ///
-    ) ///
+    legend(off) ///
     ///
     graphregion( ///
         fcolor(white) ///
@@ -484,16 +398,167 @@ twoway ///
     ///
     plotregion( ///
         fcolor(white) ///
-        lcolor(none) ///
+        lcolor(gs13) ///
+        lwidth(0.30) ///
+        margin(3 3 3 3)) ///
+    ///
+    name(g_fever_acute, replace) fxsize(170)
+
+
+*------------------------------------------------------------
+* Panel B. Other health conditions
+*------------------------------------------------------------
+
+twoway ///
+    ///
+    /* Anemia */ ///
+    (rcap min95 max95 y ///
+        if group_id == 2, ///
+        horizontal ///
+        lcolor("`col_anemia'%85") ///
+        lwidth(0.90)) ///
+    ///
+    (scatter y estimate ///
+        if group_id == 2, ///
+        msymbol(circle) ///
+        mcolor("`col_anemia'%95") ///
+        mlcolor(white) ///
+        mlwidth(0.25) ///
+        msize(2.7)) ///
+    ///
+    /* Wasting */ ///
+    (rcap min95 max95 y ///
+        if group_id == 3, ///
+        horizontal ///
+        lcolor("`col_wasting'%85") ///
+        lwidth(0.90)) ///
+    ///
+    (scatter y estimate ///
+        if group_id == 3, ///
+        msymbol(circle) ///
+        mcolor("`col_wasting'%95") ///
+        mlcolor(white) ///
+        mlwidth(0.25) ///
+        msize(2.7)) ///
+    ///
+    /* Underweight */ ///
+    (rcap min95 max95 y ///
+        if group_id == 4, ///
+        horizontal ///
+        lcolor("`col_underweight'%85") ///
+        lwidth(0.90)) ///
+    ///
+    (scatter y estimate ///
+        if group_id == 4, ///
+        msymbol(circle) ///
+        mcolor("`col_underweight'%95") ///
+        mlcolor(white) ///
+        mlwidth(0.25) ///
+        msize(2.7)) ///
+    ///
+    /* Stunting */ ///
+    (rcap min95 max95 y ///
+        if group_id == 5, ///
+        horizontal ///
+        lcolor("`col_stunting'%85") ///
+        lwidth(0.90)) ///
+    ///
+    (scatter y estimate ///
+        if group_id == 5, ///
+        msymbol(circle) ///
+        mcolor("`col_stunting'%95") ///
+        mlcolor(white) ///
+        mlwidth(0.25) ///
+        msize(2.7)) ///
+    ///
+    , ///
+    ///
+    title( ///
+        "{bf:Other health conditions}", ///
+        size(3.2) ///
+        color(gs4) ///
+        margin(b=1)) ///
+    ///
+    xline(0, ///
+        lpattern(shortdash) ///
+        lcolor(gs9) ///
+        lwidth(0.40)) ///
+    ///
+    yline(6.5 4.5 2.5, ///
+        lpattern(solid) ///
+        lcolor(gs14) ///
+        lwidth(0.25)) ///
+    ///
+    ylabel( ///
+        8 "Any anemia" ///
+        7 "Severe anemia" ///
+        6 "Wasting" ///
+        5 "Severe wasting" ///
+        4 "Underweight" ///
+        3 "Severe underweight" ///
+        2 "Stunting" ///
+        1 "Severe stunting", ///
+        angle(0) ///
+        labsize(2.65) ///
+        noticks ///
+        nogrid) ///
+    ///
+    xlabel(0(5)15, ///
+        angle(0) ///
+        labsize(3) ///
+        format(%9.0f) ///
+        noticks ///
+        nogrid ///
+        glcolor(gs14) ///
+        glwidth(0.25)) ///
+    ///
+    yscale( ///
+        range(0.45 8.55) ///
+        noline) ///
+    ///
+    xscale( ///
+        range(-1 15) ///
+        noline) ///
+    ///
+    xtitle("") ///
+    ytitle("") ///
+    legend(off) ///
+    ///
+    graphregion( ///
+        fcolor(white) ///
+        lcolor(white) ///
         margin(2 2 2 2)) ///
     ///
-    xsize(11) ///
-    ysize(5.6) ///
+    plotregion( ///
+        fcolor(white) ///
+        lcolor(gs13) ///
+        lwidth(0.30) ///
+        margin(3 3 3 3)) ///
     ///
-    name( ///
-        g_relation_fever_other_disease, ///
-        replace ///
-    )
+    name(g_fever_other, replace)  fxsize(200)
+
+
+*------------------------------------------------------------
+* Combine the two panels
+*------------------------------------------------------------
+
+graph combine ///
+    g_fever_acute ///
+    g_fever_other, ///
+    cols(2) ///
+    imargin(1 1 1 1) ///
+    graphregion( ///
+        fcolor(white) ///
+        lcolor(white) ///
+        margin(2 2 2 2)) ///
+    b1title( ///
+        "{bf:Adjusted difference in child fever prevalence (percentage points)}", ///
+        size(4.5) ///
+        margin(t=2)) ///
+    xsize(11) ///
+    ysize(4) ///
+    name(g_relation_fever_other_disease, replace) ///
+	    iscale(1.5) 
 
 
 *============================================================

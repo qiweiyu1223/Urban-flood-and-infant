@@ -60,7 +60,7 @@ twoway ///
         mcolor("157 81 79") ///
         mlcolor(white) ///
         mlwidth(0.35) ///
-        msize(2.8)) ///
+        msize(3)) ///
     (rcap min95 max95 exp_m if inlist(exp_m, 9, 12), ///
         lcolor("74 111 161") lwidth(0.75)) ///
     (scatter estimate exp_m if inlist(exp_m, 9, 12), ///
@@ -68,7 +68,7 @@ twoway ///
         mcolor("74 111 161") ///
         mlcolor(white) ///
         mlwidth(0.35) ///
-        msize(2.8)) ///
+        msize(3)) ///
     , ///
     scheme(s1color) ///
     xtitle("", size(3.2)) ///
@@ -146,7 +146,7 @@ do "$dofile/04_support_codes/keep parm.do"
             mcolor("`col1'") ///
             mlcolor(white) ///
             mlwidth(0.35) ///
-            msize(2.35) ///
+            msize(2.7) ///
             lcolor("`col1'") ///
             lwidth(0.65) ///
             lpattern(solid)) ///
@@ -157,7 +157,7 @@ do "$dofile/04_support_codes/keep parm.do"
             mcolor("`col2'") ///
             mlcolor(white) ///
             mlwidth(0.35) ///
-            msize(2.35) ///
+            msize(2.7) ///
             lcolor("`col2'") ///
             lwidth(0.65) ///
             lpattern(solid)) ///
@@ -200,12 +200,12 @@ graph combine ///
     "`out_dir'/period_fever.gph", ///
     rows(2) ///
     cols(1) ///
-    imargin(2 2 2 2) ///
+    imargin(3 3 3 3) ///
     xsize(6) ///
     ysize(11) ///
     graphregion(margin(1) fcolor(white) lcolor(white)) ///
     iscale(1.2) ///
-    l1title("{bf:Effect on child fever incidence (%)}", size(5.2) margin(r=0.2)) ///
+    l1title("{bf:Association with child fever prevalence}" "(percentage points)", size(5.2) margin(r=0.1)) ///
     name(short_health_6panel, replace)
 
 graph save "$fig/1_fever_exposure/short_health_6panel.gph", replace

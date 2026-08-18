@@ -6,7 +6,7 @@
 *
 * Right panels:
 *   Wealth, maternal education, household/facility conditions,
-*   and hospital accessibility by dist_q5
+*   and Health-facility availability by dist_q5
 *============================================================
 
 clear all
@@ -158,8 +158,8 @@ twoway ///
     xlabel(-5(5)30, angle(0) labsize(2.1) glcolor(gs14)) ///
     yscale(range(0.4 5.6)) ///
     xscale(range(-5 35)) ///
-    xtitle("Effect on child fever incidence (%)", ///
-        size(2.3) margin(t=0.5)) ///
+    xtitle("{bf:Association with child fever prevalence}" "(percentage points)", ///
+        size(2.1) margin(t=0.5)) ///
     ytitle("") ///
     legend(off) ///
     graphregion(color(white) margin(1 1 1 1)) ///
@@ -513,7 +513,7 @@ else {
 }
 
 *============================================================
-**# B4. Hospital accessibility by dist_q5
+**# B4. Health-facility availability by dist_q5
 *============================================================
 
 use `base_dhs', clear
@@ -683,7 +683,7 @@ else {
                 region(lcolor(none) fcolor(none))) ///
             graphregion(color(white) margin(1 1 1 1)) ///
             plotregion(color(white) lcolor(none) margin(1 1 2 1)) ///
-            title("{bf:Hospital accessibility}", size(1.8) color(gs2)) ///
+            title("{bf:Health-facility availability}", size(1.8) color(gs2)) ///
             name(g_hosp, replace) ///
             fysize(88)
     }

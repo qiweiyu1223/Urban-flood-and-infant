@@ -24,20 +24,16 @@ twoway ///
     ylab(1(1)`=_N', valuelabel angle(0) noticks labsize(2.4)) ///
     yscale(reverse) ///
     ytitle("") ///
-    xtitle("Difference in flood effect: High group - Low group", size(3.1)) ///
+    xtitle("Difference in flood-exposure association: High group - Low group", size(3.1)) ///
     xline(0, lpattern(solid) lcolor("120 120 120") lwidth(vthin)) ///
-    xlabel(, labsize(2.6) grid glcolor("245 245 245") glwidth(vthin)) ///
+    xlabel(, labsize(3.2) grid glcolor("245 245 245") glwidth(vthin)) ///
     legend(order(3 "p < 0.05" 4 "p > 0.05") ///
-           cols(2) size(2.4) region(lcolor(none) fcolor(none))) ///
+           cols(2) size(3) region(lcolor(none) fcolor(none))) ///
     graphregion(color(white) margin(2 2 2 2)) ///
     plotregion(color(white) margin(2 2 2 2)) ///
     bgcolor(white) ///
     title("Socioeconomic and urban-development moderators", ///
-          size(3.7) color(black)) ///
-    subtitle("High-versus-low group difference in the flood effect", ///
-          size(2.7) color("90 90 90")) ///
-    note("Points show estimates; whiskers indicate 95% confidence intervals.", ///
-         size(2.2) color("110 110 110")) ///
+          size(3.5) color(black)) ///
     name(panelA_SES_diff, replace)
 
 graph save "$fig/SI_panelA_SES/PanelA_SES_HighLow_difference.gph", replace
