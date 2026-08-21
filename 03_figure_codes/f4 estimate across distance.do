@@ -12,11 +12,12 @@
 *   Final .gph
 *============================================================
 
-clear all
-set more off
-set scheme s1color
+
 do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
-capture graph set window fontface "Times New Roman"
+set scheme s1color
+capture graph set window fontface "Arial"
+capture graph set print fontface "Arial"
+
 
 *============================================================
 **# 0. Distance labels and cutoffs
@@ -333,7 +334,7 @@ twoway ///
     yscale(range(-0.8 10.8)) ///
     xscale(range(-5 35)) ///
     xtitle("{bf:Association with child fever prevalence}" "(percentage points)", ///
-        size(2) margin(t=1)) ///
+        size(1.9) margin(t=1)) ///
     ytitle("") ///
     legend(order(2 4 6) ///
         label(2 "2 groups") ///

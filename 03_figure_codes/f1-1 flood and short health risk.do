@@ -1,7 +1,7 @@
 do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
 
-capture graph set window fontface "Times New Roman"
-capture graph set print fontface "Times New Roman"
+capture graph set window fontface "Arial"
+capture graph set print fontface "Arial"
   
 
 ******************** ratio figures ******************
@@ -204,8 +204,8 @@ graph combine ///
     xsize(6) ///
     ysize(11) ///
     graphregion(margin(1) fcolor(white) lcolor(white)) ///
-    iscale(1.2) ///
-    l1title("{bf:Association with child fever prevalence}" "(percentage points)", size(5.2) margin(r=0.1)) ///
+    iscale(1.3) ///
+    l1title("{bf:Association with child fever prevalence}" "(percentage points)", size(4.5) margin(r=0.1)) ///
     name(short_health_6panel, replace)
 
 graph save "$fig/1_fever_exposure/short_health_6panel.gph", replace
