@@ -15,6 +15,8 @@
 *   measured in percentage points.
 *============================================================
 
+capture graph set window fontface "Arial"
+capture graph set print fontface "Arial"
 
 *============================================================
 **# 12. Load plotting data

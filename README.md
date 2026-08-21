@@ -1,6 +1,6 @@
 # Urban Flooding and Child Health
 
-This repository contains the Stata code and figure-level data used to study the relationship between urban flood exposure and child health outcomes, with a particular focus on fever. The materials cover data preparation, regression analysis, robustness and heterogeneity tests, figure construction, and the processed data underlying the main and supplementary figures.
+This repository contains Stata code and processed figure-level data for studying the relationship between urban flood exposure and child health outcomes, with a focus on fever among children. The materials are organized to support data preparation, regression analysis, figure production, and transparent access to the processed values used in the main and supplementary figures.
 
 ## Repository structure
 
@@ -13,78 +13,95 @@ This repository contains the Stata code and figure-level data used to study the 
 └── 05_figure_data/
 ```
 
-### `01_data_processing`
+## Code folders
 
-Contains scripts for configuring project paths, constructing analysis variables, transforming measures, and merging supplementary datasets into the main analytical file.
+### `01_data_processing/`
 
-Key tasks include:
+Stata scripts for preparing the analytical datasets. These scripts define project paths, construct variables, merge supplementary data sources, and save processed files used by the analysis scripts.
 
-- defining the project-wide Stata globals;
-- constructing flood, health, demographic, socioeconomic, and spatial variables;
-- merging hospital, road, urban-centre, terrain, catchment, and climate information; and
-- saving the processed datasets used by the regression scripts.
+Current files include:
 
-The main setup file is `1 数据前的加载_clean_global.do`. Edit the `global dir` definition in this file before running the analysis on another computer.
+- `1 数据前的加载_clean_global.do`
+- `2. log_变量构造.do`
+- `3. 数据增加和log处理合并.do`
+- `补充数据_合并版.do`
 
-### `02_regression_codes`
+Before running the analysis on another computer, update the project path settings in `1 数据前的加载_clean_global.do`, especially the `global dir` definition.
 
-Contains the main empirical analyses and supplementary tests. The scripts estimate the association between flood exposure and child fever and generate intermediate regression results for tables and figures.
+### `02_regression_codes/`
 
-The analyses include:
+Stata scripts for the main regression analyses, robustness checks, supplementary analyses, and heterogeneity tests.
 
-- flood exposure windows and short-term child health outcomes;
-- baseline estimates and alternative specifications;
-- flooded hospitals and other facility-related mechanisms;
-- heterogeneity by distance to the urban-centre boundary;
-- heterogeneity by social and urban-development characteristics;
-- heterogeneity by mapped-water presence and Height Above Nearest Drainage (HAND);
-- comparisons using alternative flood-catchment durations;
-- associations between fever and other childhood diseases or symptoms; and
-- descriptive statistics used in the Supplementary Information.
+Current files include:
 
-### `03_figure_codes`
+- `1.1 flood and short health risk.do`
+- `1.2 fever and other disease.do`
+- `2. basline and robustness.do`
+- `3. flooded hospital.do`
+- `4. estimate across distances to urban bourdary.do`
+- `5-1 HAND_four_group_effects_only.do`
+- `5-2 map_low and water distance.do`
+- `SI social and urban development.do`
+- `SI-1h_2h_3h catchment robust.do`
 
-Contains the Stata scripts used to construct the main and supplementary figures from regression outputs and prepared plotting datasets.
+These scripts cover flood exposure and fever, other childhood health outcomes, baseline and robustness models, flooded health facilities, distance-based heterogeneity, HAND and mapped-water groups, social and urban-development heterogeneity, and alternative flood-catchment durations.
 
-The figure scripts cover:
+### `03_figure_codes/`
 
-- flood-exposure windows and child fever;
-- baseline and robustness estimates;
-- flooded health facilities;
-- distance-based heterogeneity and sample counts;
-- social and urban-development heterogeneity;
-- mapped-water presence and HAND groups; and
-- supplementary disease, exposure-duration, and distribution plots.
+Stata scripts for constructing the main and supplementary figures from regression outputs and prepared plotting datasets.
 
-### `04_support_codes`
+Current files include:
 
-Contains reusable helper scripts called by the regression and figure programs. These utilities standardize `parmest` output, combine parameter files, retain the variables required for plotting, and extract the data underlying the figures.
+- `f1-1 flood and short health risk.do`
+- `f1-2 fever and other disease.do`
+- `f2 basline and robustness.do`
+- `f3 flooded hospital.do`
+- `f4 estimate across distance.do`
+- `f5 HAND_four_group_effects_plot.do`
+- `SI_f1 kdensity.do`
+- `SI_f2 occurred and positive tertiles.do`
+- `SI_f3 1h_2h_3h basline and robustness.do`
+- `SI_f4 estimate across distance_5 groups.do`
+- `SI_f5 sample_counts(2,3,4,5 groups).do`
+- `SI_f6 social and urban development.do`
 
-In particular, `extract_figure_plot_data.do` creates the processed plotting datasets collected in `05_figure_data`.
+### `04_support_codes/`
 
-### `05_figure_data`
+Reusable helper scripts used by the regression and figure programs. These utilities support validation, parameter extraction, output selection, and generation of processed figure datasets.
 
-Contains processed Stata datasets (`.dta`) underlying the main and supplementary figures. The subfolders correspond to figure families:
+Current files include:
 
-| Folder | Content |
-|---|---|
-| `f1_short_health` | Flood-exposure windows and short-term child health |
-| `f2_baseline_robust` | Baseline estimates and robustness checks |
-| `f2_SI_baseline_robust` | Supplementary alternative specifications |
-| `f3_flooded_hospital` | Flooded facilities and hospital-related results |
-| `f4_distance` | Heterogeneity by distance to the urban boundary |
-| `f4_sample_counts` | Sample sizes across distance groups |
-| `f4_SI_distance5` | Supplementary five-group distance analysis |
-| `f5_1_social_urban` | Social and urban-development heterogeneity |
-| `f5_2_HAND_groups` | Mapped-water presence and HAND-group estimates |
-| `SI_f1_other_disease` | Fever and other diseases or symptoms |
-| `SI_fsup_hours` | Alternative flood-catchment durations |
+- `extract_figure_plot_data.do`
+- `fixed_effects_validation.do`
+- `keep parm.do`
+- `parmest输出选择语句.do`
+- `SI_t1_descriptive_statistic.do`
 
-These files provide the estimates, confidence intervals, group labels, sample counts, and other processed values used in the figures. They do not contain the restricted individual-level source data.
+In particular, `extract_figure_plot_data.do` is used to create or organize the processed plotting datasets stored in `05_figure_data/`.
+
+## Figure-level data
+
+### `05_figure_data/`
+
+This folder contains processed Stata datasets (`.dta`) underlying the main and supplementary figures. These are figure-level or plotting-ready datasets, not the restricted individual-level source data.
+
+| Folder | Files | Description |
+|---|---:|---|
+| `f1_1_short_health/` | 2 | Figure data for flood exposure and short-term child health outcomes. |
+| `f1_2_other_disease/` | 1 | Figure data for fever and other childhood diseases or symptoms. |
+| `f2_baseline_robust/` | 8 | Baseline estimates and robustness-check figure data. |
+| `f3_flooded_hospital/` | 4 | Figure data related to flooded hospitals, facility exposure, and hospital composition. |
+| `f4_distance/` | 5 | Figure data for heterogeneity by distance to the urban boundary. |
+| `f5_HAND_groups/` | 5 | Figure data for mapped-water presence and HAND group analyses. |
+| `SI_f2_occurred_positive_tertiles/` | 3 | Supplementary figure data for flood occurrence, positive exposure, and weighted continuous specifications. |
+| `SI_f3_hours/` | 3 | Supplementary figure data for alternative flood-catchment durations. |
+| `SI_f4_distance_5_groups/` | 5 | Supplementary figure data for five-group distance analyses. |
+| `SI_f5_sample_counts/` | 1 | Supplementary sample-count data across distance groups. |
+| `SI_f6_social_urban/` | 1 | Supplementary figure data for social and urban-development heterogeneity. |
 
 ## Software requirements
 
-The analysis is written for Stata. The following community-contributed commands are used by the scripts:
+The analysis is written for Stata. The scripts use several community-contributed commands, including:
 
 ```stata
 ssc install ftools, replace
@@ -93,32 +110,33 @@ ssc install outreg2, replace
 ssc install parmest, replace
 ```
 
-Several figure scripts also call `openall`. Make sure that this command is installed or otherwise available on the Stata ado-path before running those scripts.
+Some scripts may also require additional user-written commands such as `openall`. Install any missing commands before running the full workflow.
 
-## Running the analysis
+## Running the workflow
 
 1. Clone or download this repository.
-2. Place the required source datasets in a local data directory. The individual-level analytical data are not included in this repository.
-3. Open `01_data_processing/1 数据前的加载_clean_global.do` and change `global dir` to the local project root.
-4. Search the `.do` files for any remaining absolute paths (for example, paths beginning with `E:/` or `G:/`) and update them for the local environment.
-5. Run the relevant data-processing scripts in `01_data_processing` if the processed analytical data must be rebuilt.
-6. Run the scripts in `02_regression_codes` to reproduce the regression outputs.
-7. Run the scripts in `03_figure_codes` to recreate the figures from the regression and plotting outputs.
-8. Run `04_support_codes/extract_figure_plot_data.do` to rebuild the figure-level datasets stored in `05_figure_data`.
+2. Place the required restricted source datasets in the expected local data directory. These source datasets are not included in this repository.
+3. Open `01_data_processing/1 数据前的加载_clean_global.do` and update the project root path, especially `global dir`.
+4. Search the `.do` files for any remaining absolute local paths and adjust them for your environment.
+5. Run the relevant scripts in `01_data_processing/` if the processed analytical data need to be rebuilt.
+6. Run the analysis scripts in `02_regression_codes/` to reproduce regression outputs.
+7. Use `04_support_codes/` as needed to validate outputs, process parameter estimates, and extract plotting datasets.
+8. Run the scripts in `03_figure_codes/` to recreate the figures.
+9. Use the datasets in `05_figure_data/` to inspect the processed numerical values underlying the figures.
 
-The regression scripts are organized by analysis rather than through a single master script. Run only the modules required for the result being reproduced, while preserving the dependencies described in the code comments.
+The repository is organized by analysis module rather than as a single master script. Run only the modules required for the result being reproduced, while preserving the path and data dependencies described in the code comments.
 
 ## Data availability and reproducibility
 
-The repository includes processed, figure-level data but not the restricted individual-level source datasets. Reproducing the regressions therefore requires authorized access to the underlying survey and spatial datasets and preparation of the expected Stata files and variables.
+The repository includes Stata code and processed figure-level data. It does not include restricted individual-level survey data or other restricted source datasets needed to rebuild every analytical file from scratch.
 
-The files in `05_figure_data` are intended to improve transparency by providing the numerical values underlying the reported figures. Because the current figure scripts generally read intermediate regression or `parmest` outputs, users who wish to plot directly from `05_figure_data` may need to update the corresponding input paths or `use` statements.
+The `05_figure_data/` folder improves transparency by providing processed values used in the figures, including estimates, confidence intervals, group labels, and sample-count information where applicable.
 
 ## File formats
 
-- `.do`: Stata programs for data preparation, analysis, and visualization.
-- `.dta`: processed Stata datasets containing figure-level results.
+- `.do`: Stata programs for data preparation, regression analysis, support utilities, and figure construction.
+- `.dta`: processed Stata datasets containing figure-level or plotting-ready results.
 
 ## Questions and issues
 
-For questions about the code or reproducibility, please open an issue in this GitHub repository and identify the relevant script and figure or table.
+For questions about code organization or reproducibility, please open an issue in this GitHub repository and identify the relevant script, figure, or table.

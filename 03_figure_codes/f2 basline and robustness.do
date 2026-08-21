@@ -1,5 +1,6 @@
-capture graph set window fontface "Times New Roman"
-capture graph set print  fontface "Times New Roman"
+capture graph set window fontface "Arial"
+capture graph set print fontface "Arial"
+
 
 * ============================================================
 **# Global variables

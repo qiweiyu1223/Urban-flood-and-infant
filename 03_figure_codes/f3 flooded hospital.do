@@ -1,5 +1,5 @@
-capture graph set window fontface "Times New Roman"
-capture graph set print fontface "Times New Roman"
+capture graph set window fontface "Arial"
+capture graph set print fontface "Arial"
 
 do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
 
@@ -355,7 +355,7 @@ twoway ///
         angle(0) ///
         nogrid) ///
     xscale(range(0 100)) ///
-    xtitle("{bf:Share of hospitals in the 3-hour catchment (%)}", ///
+    xtitle("{bf:Share of hospitals in the 3-h catchment (%)}", ///
         size(2.35) ///
         margin(t=2)) ///
     ytitle("") ///
@@ -529,7 +529,7 @@ graph combine ///
         fcolor(white) ///
         lcolor(white) ///
         margin(0 0 0 0)) ///
-    iscale(1) ///
+    iscale(0.9) ///
     name(hospital_other_main_density, replace)
 
 graph save ///

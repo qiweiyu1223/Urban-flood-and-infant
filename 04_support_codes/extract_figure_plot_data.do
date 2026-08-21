@@ -4,8 +4,21 @@
 * Source folder:
 *   E:/桌面/儿童发烧-do文件/02_code/03_figure_codes
 *
-* Excluded:
-*   SI-f3 kdensity.do
+* Included (current filenames; 2026-08-21):
+*   f1-1 flood and short health risk.do
+*   f1-2 fever and other disease.do
+*   f2 basline and robustness.do
+*   f3 flooded hospital.do
+*   f4 estimate across distance.do
+*   f5 HAND_four_group_effects_plot.do
+*   SI_f2 occurred and positive tertiles.do
+*   SI_f3 1h_2h_3h basline and robustness.do
+*   SI_f4 estimate across distance_5 groups.do
+*   SI_f5 sample_counts(2,3,4,5 groups).do
+*   SI_f6 social and urban development.do
+*
+* Excluded by design:
+*   SI_f1 kdensity.do
 *
 * Output folder:
 *   E:/桌面/儿童发烧-do文件/04_figure data
@@ -130,10 +143,10 @@ program define _prep_coef_export
 end
 
 *============================================================
-**# f1 flood and short health risk.do
+**# f1-1 flood and short health risk.do
 *============================================================
 
-local out_f1 "`figdata_root'/f1_short_health"
+local out_f1 "`figdata_root'/f1_1_short_health"
 cap mkdir "`out_f1'"
 
 cd "$fig_data/1_fever_exposure"
@@ -164,12 +177,12 @@ replace exp_m = 12 if parm == "flood_12m_ratio_csv"
 label define month_lab 3 "3" 6 "6" 9 "9" 12 "12", replace
 label values exp_m month_lab
 
-gen figure_name  = "main_f1a"
+gen figure_name  = "f1_1_ratio"
 gen str40 figure_panel = "3/6/9/12-month exposure"
 order figure_name figure_panel exp_m parm estimate min95 max95 p
 sort exp_m
 
-save "`out_f1'/main_f1a.dta", replace
+save "`out_f1'/f1_1_ratio.dta", replace
 
 cd "$fig_data/1_fever_exposure"
 openall
@@ -188,11 +201,11 @@ forvalues k = 1/12 {
 keep if !missing(win)
 sort win
 
-gen figure_name  = "main_f1b"
+gen figure_name  = "f1_1_period"
 gen str40 figure_panel = "1-12-month exposure window"
 order figure_name figure_panel win parm estimate min95 max95 p
 
-save "`out_f1'/main_f1b.dta", replace
+save "`out_f1'/f1_1_period.dta", replace
 
 *============================================================
 **# f2 basline and robustness.do
@@ -211,7 +224,7 @@ _save_ratio_panel, sourcedir("fe1") ///
 
 _save_ratio_panel, sourcedir("fe2") ///
     outfile("`out_f2'/main_f2c.dta") figname("main_f2c") ///
-    model("Model 2") modelorder(3) subtitle("urban year x month")
+    model("Model 2") modelorder(3) subtitle("urban year × month")
 
 _save_ratio_panel, sourcedir("fe3") ///
     outfile("`out_f2'/main_f2d.dta") figname("main_f2d") ///
@@ -219,7 +232,7 @@ _save_ratio_panel, sourcedir("fe3") ///
 
 _save_ratio_panel, sourcedir("selecttime") ///
     outfile("`out_f2'/main_f2e.dta") figname("main_f2e") ///
-    model("Model 4") modelorder(5) subtitle("2018-2022 sample")
+    model("Model 4") modelorder(5) subtitle("2018–2022 sample")
 
 _save_ratio_panel, sourcedir("DHS_flood") ///
     outfile("`out_f2'/main_f2f.dta") figname("main_f2f") ///
@@ -282,22 +295,22 @@ label define xlabel_flood ///
     6 "Roads", replace
 label values x xlabel_flood
 
-gen figure_name = "main_f3a"
-gen panel = "Panel A"
+gen figure_name = "f3_flooded_facilities"
+gen panel = "Flooded facilities"
 gen figure_title = "Percentage of facilities flooded"
 gen str40 facility_type = ""
-replace facility_type = "All hospitals"       if x == 1
-replace facility_type = "Primary hospitals"   if x == 2
-replace facility_type = "Secondary hospitals" if x == 3
-replace facility_type = "Water facilities"    if x == 4
-replace facility_type = "Schools"             if x == 5
-replace facility_type = "Roads"               if x == 6
+replace facility_type = "All health facilities"           if x == 1
+replace facility_type = "Basic / non-hospital facilities"  if x == 2
+replace facility_type = "Hospital facilities"              if x == 3
+replace facility_type = "Water facilities"                 if x == 4
+replace facility_type = "Schools"                          if x == 5
+replace facility_type = "Roads"                            if x == 6
 
 keep figure_name panel figure_title facility_type x parm estimate min95 max95 p
 order figure_name panel figure_title facility_type x parm estimate min95 max95 p
 sort x
 
-save "`out_f3'/main_f3a.dta", replace
+save "`out_f3'/f3_flooded_facilities.dta", replace
 
 use "$data/KR_PR_Africa_4.dta", clear
 
@@ -379,8 +392,8 @@ gen nonuc_pct_lab = string(share_nonuc, "%4.1f") + "%"
 replace uc_pct_lab = "" if share_uc < 5
 replace nonuc_pct_lab = "" if share_nonuc < 5
 
-gen figure_name = "main_f3c"
-gen panel = "Panel C"
+gen figure_name = "f3_hospital_composition"
+gen panel = "Hospital composition"
 gen figure_title = "Urban centre vs Patch outside urban centre hospital share"
 gen str60 hospital_level = ""
 replace hospital_level = "Basic / non-hospital facility" if level_order == 1
@@ -396,7 +409,7 @@ order figure_name panel figure_title hospital_level level_order y ///
     uc_mid nonuc_mid uc_pct_lab nonuc_pct_lab
 sort level_order
 
-save "`out_f3'/main_f3c_hosp_share.dta", replace
+save "`out_f3'/f3_hospital_composition.dta", replace
 
 use `f3_base', clear
 
@@ -424,8 +437,8 @@ local N_used = r(N)
 
 local N_excluded = `N_total' - `N_used'
 
-gen str10 figure_name = "main_f3d"
-gen str10 panel = "Panel D"
+gen str32 figure_name = "f3_area_ratio"
+gen str20 panel = "Area ratio"
 gen str40 figure_title = "UC area / Patch outside UC area"
 
 keep figure_name panel figure_title urban_id ///
@@ -441,7 +454,7 @@ order figure_name panel figure_title urban_id ///
     uc_mergedcatchment_area_ratio uc_patchout_area_ratio_raw ///
     uc_patchout_area_ratio uc_patchout_area_pct
 
-save "`out_f3'/main_f3d_area_raw.dta", replace
+save "`out_f3'/f3_area_ratio_raw.dta", replace
 
 use `f3_base', clear
 
@@ -455,8 +468,8 @@ collapse ///
     (p75) p75 = uc_patchout_area_pct ///
     (max) max = uc_patchout_area_pct
 
-gen figure_name = "main_f3d"
-gen panel = "Panel D"
+gen figure_name = "f3_area_ratio"
+gen panel = "Area ratio"
 gen figure_title = "UC area / Patch outside UC area boxplot summary"
 gen N_total = `N_total'
 gen N_invalid_area = `N_invalid_area'
@@ -467,7 +480,7 @@ gen N_excluded = `N_excluded'
 order figure_name panel figure_title N_total N_invalid_area N_gt1 ///
     N_used N_excluded N mean sd min p25 median p75 max
 
-save "`out_f3'/main_f3d_area_summary.dta", replace
+save "`out_f3'/f3_area_ratio_summary.dta", replace
 
 *============================================================
 **# f4 estimate across distance.do
@@ -697,90 +710,6 @@ if !_rc {
 tempfile base_dhs
 save `base_dhs', replace
 
-tempfile samp_long
-clear
-save `samp_long', emptyok replace
-
-use `base_dhs', clear
-gen dist_q2_samp = .
-replace dist_q2_samp = 1 if `distvar' <= 15 & !missing(`distvar')
-replace dist_q2_samp = 2 if `distvar' > 15  & !missing(`distvar')
-keep if !missing(dist_q2_samp)
-contract dist_q2_samp, freq(N_sample)
-gen hetero_var = "dist_q2"
-gen y = .
-replace y = 10 if dist_q2_samp == 1
-replace y =  9 if dist_q2_samp == 2
-gen str20 group_label = ""
-replace group_label = "<=15 km" if dist_q2_samp == 1
-replace group_label = ">15 km"  if dist_q2_samp == 2
-append using `samp_long'
-save `samp_long', replace
-
-use `base_dhs', clear
-gen dist_q3_samp = .
-replace dist_q3_samp = 1 if `distvar' >= 0 & `distvar' <= 5  & !missing(`distvar')
-replace dist_q3_samp = 2 if `distvar' > 5  & `distvar' <= 25 & !missing(`distvar')
-replace dist_q3_samp = 3 if `distvar' > 25 & !missing(`distvar')
-keep if !missing(dist_q3_samp)
-contract dist_q3_samp, freq(N_sample)
-gen hetero_var = "dist_q3"
-gen y = .
-replace y = 7 if dist_q3_samp == 1
-replace y = 6 if dist_q3_samp == 2
-replace y = 5 if dist_q3_samp == 3
-gen str20 group_label = ""
-replace group_label = "0-5 km"  if dist_q3_samp == 1
-replace group_label = "5-25 km" if dist_q3_samp == 2
-replace group_label = ">25 km"  if dist_q3_samp == 3
-append using `samp_long'
-save `samp_long', replace
-
-use `base_dhs', clear
-gen dist_q4_samp = .
-replace dist_q4_samp = 1 if `distvar' == 0 & !missing(`distvar')
-replace dist_q4_samp = 2 if `distvar' > 0  & `distvar' <= 10 & !missing(`distvar')
-replace dist_q4_samp = 3 if `distvar' > 10 & `distvar' <= 30 & !missing(`distvar')
-replace dist_q4_samp = 4 if `distvar' > 30 & !missing(`distvar')
-keep if !missing(dist_q4_samp)
-contract dist_q4_samp, freq(N_sample)
-gen hetero_var = "dist_q4"
-gen y = .
-replace y = 3 if dist_q4_samp == 1
-replace y = 2 if dist_q4_samp == 2
-replace y = 1 if dist_q4_samp == 3
-replace y = 0 if dist_q4_samp == 4
-gen str20 group_label = ""
-replace group_label = "`q4_lab1'" if dist_q4_samp == 1
-replace group_label = "`q4_lab2'" if dist_q4_samp == 2
-replace group_label = "`q4_lab3'" if dist_q4_samp == 3
-replace group_label = "`q4_lab4'" if dist_q4_samp == 4
-append using `samp_long'
-save `samp_long', replace
-
-use `samp_long', clear
-gen n_label = string(N_sample, "%12.0fc")
-cap drop xpos
-gen xpos = .
-replace xpos = 0 if hetero_var == "dist_q2" & dist_q2_samp == 1
-replace xpos = 1 if hetero_var == "dist_q2" & dist_q2_samp == 2
-replace xpos = 3 if hetero_var == "dist_q3" & dist_q3_samp == 1
-replace xpos = 4 if hetero_var == "dist_q3" & dist_q3_samp == 2
-replace xpos = 5 if hetero_var == "dist_q3" & dist_q3_samp == 3
-replace xpos = 7  if hetero_var == "dist_q4" & dist_q4_samp == 1
-replace xpos = 8  if hetero_var == "dist_q4" & dist_q4_samp == 2
-replace xpos = 9  if hetero_var == "dist_q4" & dist_q4_samp == 3
-replace xpos = 10 if hetero_var == "dist_q4" & dist_q4_samp == 4
-gen figure_name = "main_f4b"
-gen figure_panel = "Sample size by distance groups"
-keep figure_name figure_panel hetero_var group_label ///
-    dist_q2_samp dist_q3_samp dist_q4_samp y xpos N_sample n_label
-order figure_name figure_panel hetero_var group_label ///
-    dist_q2_samp dist_q3_samp dist_q4_samp y xpos N_sample n_label
-sort hetero_var xpos
-
-save "`out_f4'/main_f4b.dta", replace
-
 use `base_dhs', clear
 capture confirm variable v190
 if !_rc {
@@ -789,7 +718,7 @@ if !_rc {
     bys dist_q4: egen total = total(_freq)
     gen pct = 100 * _freq / total
     gen x = (dist_q4 - 1) * 6 + v190
-    gen figure_name = "main_f4c"
+    gen figure_name = "main_f4b"
     gen figure_panel = "Wealth distribution by dist_q4"
     gen str20 distance_group = ""
     replace distance_group = "`q4_lab1'" if dist_q4 == 1
@@ -804,7 +733,7 @@ if !_rc {
     replace wealth_group = "Richest" if v190 == 5
     order figure_name figure_panel distance_group wealth_group
     sort dist_q4 v190
-    save "`out_f4'/main_f4c.dta", replace
+    save "`out_f4'/main_f4b_wealth.dta", replace
 }
 
 use `base_dhs', clear
@@ -816,7 +745,7 @@ if !_rc {
     gen pct = 100 * _freq / total
     gen edu_order = v106_clean + 1
     gen x = (dist_q4 - 1) * 5 + edu_order
-    gen figure_name = "main_f4d"
+    gen figure_name = "main_f4c"
     gen figure_panel = "Maternal education distribution by dist_q4"
     gen str20 distance_group = ""
     replace distance_group = "`q4_lab1'" if dist_q4 == 1
@@ -830,7 +759,7 @@ if !_rc {
     replace education_group = "Higher"       if v106_clean == 3
     order figure_name figure_panel distance_group education_group
     sort dist_q4 v106_clean
-    save "`out_f4'/main_f4d.dta", replace
+    save "`out_f4'/main_f4c_education.dta", replace
 }
 
 local infra_vars ///
@@ -870,8 +799,8 @@ foreach v of local infra_vars {
 
 if `n_infra' > 0 {
     use `infra_long', clear
-    gen figure_name = "main_f4e"
-    gen figure_panel = "Household and facility-related conditions by dist_q4"
+    gen figure_name = "main_f4d"
+    gen figure_panel = "Household conditions by dist_q4"
     gen str20 distance_group = ""
     replace distance_group = "`q4_lab1'" if dist_q4 == 1
     replace distance_group = "`q4_lab2'" if dist_q4 == 2
@@ -879,7 +808,7 @@ if `n_infra' > 0 {
     replace distance_group = "`q4_lab4'" if dist_q4 == 4
     order figure_name figure_panel distance_group item
     sort item dist_q4
-    save "`out_f4'/main_f4e.dta", replace
+    save "`out_f4'/main_f4d_household_conditions.dta", replace
 }
 
 use `base_dhs', clear
@@ -1017,24 +946,27 @@ if "`hosp_plot_vars'" != "" {
 
     if `n_hosp' > 0 {
         use `hosp_long', clear
-        gen figure_name = "main_f4f"
-        gen figure_panel = "Hospital counts by dist_q4"
+        gen figure_name = "main_f4e"
+        gen figure_panel = "Health-facility availability by dist_q4"
         gen str20 distance_group = ""
         replace distance_group = "`q4_lab1'" if dist_q4 == 1
         replace distance_group = "`q4_lab2'" if dist_q4 == 2
         replace distance_group = "`q4_lab3'" if dist_q4 == 3
         replace distance_group = "`q4_lab4'" if dist_q4 == 4
-        order figure_name figure_panel distance_group item
+        gen str40 plot_label = ""
+        replace plot_label = "Hospital facilities" if item == "Higher-level hospital"
+        replace plot_label = "Basic / non-hospital facilities" if item == "Basic facility"
+        order figure_name figure_panel distance_group item plot_label
         sort item dist_q4
-        save "`out_f4'/main_f4f.dta", replace
+        save "`out_f4'/main_f4e_health_facility.dta", replace
     }
 }
 
 *============================================================
-**# f2_SI basline and robustness.do
+**# SI_f2 occurred and positive tertiles.do
 *============================================================
 
-local out_f2_si "`figdata_root'/f2_SI_baseline_robust"
+local out_f2_si "`figdata_root'/SI_f2_occurred_positive_tertiles"
 cap mkdir "`out_f2_si'"
 
 cd "$fig_data/baseline_alternative_specification/occurred"
@@ -1067,8 +999,8 @@ replace group_name = "High positive exposure" if group_value == 2
 
 cap drop x_low
 cap drop x_high
-gen double x_low  = x - 0.3 if group_value == 1
-gen double x_high = x + 0.3 if group_value == 2
+gen double x_low  = x - 0.5 if group_value == 1
+gen double x_high = x + 0.5 if group_value == 2
 
 gen str24 figure_name  = "SI_f2b_positive"
 gen str40 figure_panel = "Positive exposure intensity"
@@ -1116,9 +1048,9 @@ replace weight_label = "wt_equal_survey" if weight_order == 3
 
 cap drop x_wt
 gen double x_wt = x
-replace x_wt = x - 0.5 if weight_order == 1
+replace x_wt = x - 0.7 if weight_order == 1
 replace x_wt = x       if weight_order == 2
-replace x_wt = x + 0.5 if weight_order == 3
+replace x_wt = x + 0.7 if weight_order == 3
 
 gen str24 figure_name  = "SI_f2c_weighted"
 gen str40 figure_panel = "Weighted continuous exposure"
@@ -1129,10 +1061,10 @@ sort plot_window_num weight_order
 save "`out_f2_si'/SI_f2c_weighted_continuous.dta", replace
 
 *============================================================
-**# f4_sample_counts.do
+**# SI_f5 sample_counts(2,3,4,5 groups).do
 *============================================================
 
-local out_f4_sample "`figdata_root'/f4_sample_counts"
+local out_f4_sample "`figdata_root'/SI_f5_sample_counts"
 cap mkdir "`out_f4_sample'"
 
 local distvar dhs_to_urban_boundary_km
@@ -1248,7 +1180,7 @@ save `samp_long', replace
 
 use `samp_long', clear
 
-gen str24 figure_name  = "f4_sample_counts"
+gen str24 figure_name  = "SI_f5_sample_counts"
 gen str40 figure_panel = "Sample size by distance groups"
 gen n_label = string(N_sample, "%12.0fc")
 
@@ -1276,10 +1208,10 @@ sort hetero_var xpos
 save "`out_f4_sample'/sample_counts_q2_q3_q4_q5.dta", replace
 
 *============================================================
-**# f4_SI estimate across distance.do
+**# SI_f4 estimate across distance_5 groups.do
 *============================================================
 
-local out_f4_si "`figdata_root'/f4_SI_distance5"
+local out_f4_si "`figdata_root'/SI_f4_distance_5_groups"
 cap mkdir "`out_f4_si'"
 
 local distvar dhs_to_urban_boundary_km
@@ -1556,15 +1488,21 @@ if !_rc {
 }
 
 *============================================================
-**# f5-1 social and urban development.do
+**# SI_f6 social and urban development.do
 *============================================================
 
-local out_f5_1 "`figdata_root'/f5_1_social_urban"
+local out_f5_1 "`figdata_root'/SI_f6_social_urban"
 cap mkdir "`out_f5_1'"
 
 use "$fig_data/SI_panelA_SES/PanelA_SES_HighLow_difference.dta", clear
 
-gen figure_name  = "main_f5-1a"
+cap drop plot_group
+gen str10 plot_group = ""
+replace plot_group = "p<0.05" if p < 0.05
+replace plot_group = "p>0.05" if p > 0.05 & !missing(p)
+keep if plot_group != ""
+
+gen figure_name  = "SI_f6"
 gen figure_title = "Socioeconomic and urban-development moderators"
 gen x_axis       = "Difference in flood effect: High group - Low group"
 
@@ -1581,15 +1519,15 @@ if _rc {
 }
 
 order figure_name figure_title x_axis ///
-    order moderator_label estimate min95 max95 p sig5 sig10 nonsig
+    order moderator_label plot_group estimate min95 max95 p sig5 sig10 nonsig
 
-save "`out_f5_1'/main_f5_1a.dta", replace
+save "`out_f5_1'/SI_f6_social_urban.dta", replace
 
 *============================================================
-**# f5-2 HAND_four_group_effects_plot.do
+**# f5 HAND_four_group_effects_plot.do
 *============================================================
 
-local out_f5_2 "`figdata_root'/f5_2_HAND_groups"
+local out_f5_2 "`figdata_root'/f5_HAND_groups"
 cap mkdir "`out_f5_2'"
 
 local resultdir "E:/桌面/儿童发烧-do文件/04_parmest data/mapped_water_HAND_four_group"
@@ -1628,10 +1566,10 @@ replace group_order = 3 if group_code == "has_water_notlow"
 replace group_order = 4 if group_code == "no_water_notlow"
 
 label define group_order_lab ///
-    1 "Mapped water + Low HAND" ///
-    2 "No mapped water + Low HAND" ///
-    3 "Mapped water + High HAND" ///
-    4 "No mapped water + High HAND", replace
+    1 "Mapped water and low-lying" ///
+    2 "No mapped water and low-lying" ///
+    3 "Mapped water and not low-lying" ///
+    4 "No Mapped water and not low-lying", replace
 label values group_order group_order_lab
 
 assert !missing(metric_order)
@@ -1641,44 +1579,44 @@ gen double estimate_pct = estimate * 100
 gen double min95_pct    = min95 * 100
 gen double max95_pct    = max95 * 100
 
-gen figure_name = "main_f5-2"
+gen figure_name = "f5_HAND_four_groups"
 gen str40 figure_panel = ""
-replace figure_panel = "Mapped water + Low HAND" if group_order == 1
-replace figure_panel = "No mapped water + Low HAND" if group_order == 2
-replace figure_panel = "Mapped water + High HAND" if group_order == 3
-replace figure_panel = "No mapped water + High HAND" if group_order == 4
+replace figure_panel = "Mapped water and low-lying" if group_order == 1
+replace figure_panel = "No mapped water and low-lying" if group_order == 2
+replace figure_panel = "Mapped water and not low-lying" if group_order == 3
+replace figure_panel = "No Mapped water and not low-lying" if group_order == 4
 
 order figure_name figure_panel metric_order group_order ///
     hand_metric group_code estimate min95 max95 estimate_pct min95_pct max95_pct
 sort group_order metric_order
 
-save "`out_f5_2'/main_f5_2_all.dta", replace
+save "`out_f5_2'/f5_HAND_four_groups_all.dta", replace
 
 preserve
     keep if group_order == 1
-    save "`out_f5_2'/main_f5_2a_has_water_low.dta", replace
+    save "`out_f5_2'/f5_has_water_low.dta", replace
 restore
 
 preserve
     keep if group_order == 2
-    save "`out_f5_2'/main_f5_2b_no_water_low.dta", replace
+    save "`out_f5_2'/f5_no_water_low.dta", replace
 restore
 
 preserve
     keep if group_order == 3
-    save "`out_f5_2'/main_f5_2c_has_water_high.dta", replace
+    save "`out_f5_2'/f5_has_water_notlow.dta", replace
 restore
 
 preserve
     keep if group_order == 4
-    save "`out_f5_2'/main_f5_2d_no_water_high.dta", replace
+    save "`out_f5_2'/f5_no_water_notlow.dta", replace
 restore
 
 *============================================================
-**# SI-f1-1 fever and other disease.do
+**# f1-2 fever and other disease.do
 *============================================================
 
-local out_si_f1 "`figdata_root'/SI_f1_other_disease"
+local out_si_f1 "`figdata_root'/f1_2_other_disease"
 cap mkdir "`out_si_f1'"
 
 use "$fig_data/SI_fever_other_disease/fever_other_disease_one_model_results.dta", clear
@@ -1752,34 +1690,34 @@ label values group_id group_lab
 drop if missing(y)
 drop if missing(estimate, min95, max95)
 
-gen figure_name = "SI_f1_1"
+gen figure_name = "f1_2"
 gen str50 figure_panel = "Fever and other diseases or symptoms"
 
 order figure_name figure_panel group_id y parm estimate min95 max95
 gsort -y
 
-save "`out_si_f1'/SI_f1_1_other_disease.dta", replace
+save "`out_si_f1'/f1_2_other_disease.dta", replace
 
 *============================================================
-**# SI-fsup 1h_2h_3h .do
+**# SI_f3 1h_2h_3h basline and robustness.do
 *============================================================
 
-local out_si_fsup "`figdata_root'/SI_fsup_hours"
+local out_si_fsup "`figdata_root'/SI_f3_hours"
 cap mkdir "`out_si_fsup'"
 
 _save_ratio_panel, sourcedir("baseline") ///
-    outfile("`out_si_fsup'/SI_fsup_3h_baseline.dta") ///
-    figname("SI_fsup_3h") model("3h catchment") modelorder(1) ///
+    outfile("`out_si_fsup'/SI_f3_3h_baseline.dta") ///
+    figname("SI_f3_3h") model("3h catchment") modelorder(1) ///
     subtitle("baseline")
 
 _save_ratio_panel, sourcedir("hours_compare_2h") ///
-    outfile("`out_si_fsup'/SI_fsup_2h.dta") ///
-    figname("SI_fsup_2h") model("2h catchment") modelorder(2) ///
+    outfile("`out_si_fsup'/SI_f3_2h.dta") ///
+    figname("SI_f3_2h") model("2h catchment") modelorder(2) ///
     subtitle("2h catchment")
 
 _save_ratio_panel, sourcedir("hours_compare_1h") ///
-    outfile("`out_si_fsup'/SI_fsup_1h.dta") ///
-    figname("SI_fsup_1h") model("1h catchment") modelorder(3) ///
+    outfile("`out_si_fsup'/SI_f3_1h.dta") ///
+    figname("SI_f3_1h") model("1h catchment") modelorder(3) ///
     subtitle("1h catchment")
 
 di as result "Done. Figure plotting data exported to: `figdata_root'"
