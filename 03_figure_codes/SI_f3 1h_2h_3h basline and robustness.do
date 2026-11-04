@@ -5,6 +5,7 @@ cap mkdir "$fig/SI_sup"
 *------------------------------------------------------------
 * Panel 1 - Graph 1: Baseline
 * The first three graphs share ylabel / yscale settings.
+do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
 *------------------------------------------------------------
 cd "$fig_data/baseline_alternative_specification/baseline"
 openall 
@@ -26,7 +27,7 @@ graph twoway ///
     (scatter estimate x if month == 12,  msymbol(circle) mcolor("204 121 167") mlcolor("204 121 167") mlwidth(medium) msize(3)), ///
     scheme(s1mono) ///
     title("{bf:3h catchment (baseline)}", size(3.8)) ///
-    subtitle("(283,965 obs.)", size(3.2)) ///
+    subtitle("(283,996 obs.)", size(3.2)) ///
     xtitle("") ///
     ytitle("") ///
     xlabel(3 6 9 12, valuelabel labsize(3.5) angle(0) noticks nogrid) ///

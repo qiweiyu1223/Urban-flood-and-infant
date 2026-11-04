@@ -1,4 +1,4 @@
-do "$dofile/01_data_processing/1 数据前的加载_clean_global.do"
+do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加载_clean_global.do"
 capture graph set window fontface "Arial"
 capture graph set print fontface "Arial"
 * Optional preprocessing when adding new variables

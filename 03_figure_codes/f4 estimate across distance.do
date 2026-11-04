@@ -361,6 +361,10 @@ twoway ///
 
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 capture confirm variable `distvar'
 if _rc {
     di as error "变量不存在：`distvar'"
@@ -440,8 +444,8 @@ if !_rc {
 capture drop long_wtr_time
 capture confirm variable ph_wtr_time
 if !_rc {
-    sum ph_wtr_time if !missing(ph_wtr_time), detail
-    gen long_wtr_time = (ph_wtr_time > r(p50)) if !missing(ph_wtr_time)
+    * Long collection: >30 min (code 2); valid comparison codes are 0 and 1.
+    gen byte long_wtr_time = (ph_wtr_time == 2) if inlist(ph_wtr_time, 0, 1, 2)
 }
 
 

@@ -202,7 +202,7 @@ save `base', replace
 
 * ============================================================
 **# Figure C: facility-level shares
-* Urban centre vs Patch outside urban centre
+* Urban center vs Patch outside urban center
 * ============================================================
 
 use `base', clear
@@ -360,7 +360,7 @@ twoway ///
         margin(t=2)) ///
     ytitle("") ///
     legend( ///
-        order(1 "Urban centre" 2 "Outside urban centre") ///
+        order(1 "Urban center" 2 "Outside urban center") ///
         rows(1) ///
         size(2.0) ///
         position(6) ///
@@ -428,7 +428,7 @@ local N_excluded = `N_total' - `N_used'
 
 
 label variable uc_patchout_area_pct ///
-    "Urban centre area / Patch outside UC area (%)"
+    "Urban center area / Patch outside UC area (%)"
 
 summarize uc_patchout_area_pct, detail
 
