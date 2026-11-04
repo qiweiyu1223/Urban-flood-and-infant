@@ -20,6 +20,10 @@ do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加
 
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 *------------------------------------------------------------
 **# 1. Core variables used by the regressions
 *------------------------------------------------------------
@@ -132,7 +136,7 @@ capture label variable city_hf_total "Number of health facilities in the urban c
 capture label variable dhs_to_urban_boundary_km "Distance from DHS cluster to urban boundary, in kilometers"
 capture label variable ph_rooms_sleep "Number of rooms used for sleeping"
 capture label variable ph_wtr_improve "Household has an improved water source"
-capture label variable ph_wtr_time "Time needed to collect household water"
+capture label variable ph_wtr_time "Water collection category (0=on premises, 1=<=30 min, 2=>30 min)"
 capture label variable hospital_30km_total "Number of hospitals within 30 km"
 
 forvalues w = 1/12 {

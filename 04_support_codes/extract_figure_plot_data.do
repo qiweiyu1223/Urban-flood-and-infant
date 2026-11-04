@@ -314,6 +314,10 @@ save "`out_f3'/f3_flooded_facilities.dta", replace
 
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 local vars ///
     uc_hosp_l0 uc_hosp_l1 uc_hosp_l2 uc_hosp_l3 ///
     patch_hosp_l0 patch_hosp_l1 patch_hosp_l2 patch_hosp_l3 ///
@@ -650,6 +654,10 @@ save "`out_f4'/main_f4a.dta", replace
 
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 capture confirm variable `distvar'
 if _rc {
     di as error "变量不存在：`distvar'"
@@ -703,8 +711,8 @@ if !_rc {
 cap drop long_wtr_time
 capture confirm variable ph_wtr_time
 if !_rc {
-    sum ph_wtr_time if !missing(ph_wtr_time), detail
-    gen long_wtr_time = (ph_wtr_time > r(p50)) if !missing(ph_wtr_time)
+    * Long collection: >30 min (code 2); valid comparison codes are 0 and 1.
+    gen byte long_wtr_time = (ph_wtr_time == 2) if inlist(ph_wtr_time, 0, 1, 2)
 }
 
 tempfile base_dhs
@@ -1089,6 +1097,10 @@ local q5_lab4 "`q5_cut3'-`q5_cut4' km"
 local q5_lab5 ">`q5_cut4' km"
 
 use "$data/KR_PR_Africa_4.dta", clear
+
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
 tempfile sample_base
 save `sample_base', replace
 
@@ -1254,6 +1266,10 @@ save "`out_f4_si'/SI_f4a_dist_q5_coefficients.dta", replace
 
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 capture drop dist_q5
 gen dist_q5 = .
 replace dist_q5 = 1 if `distvar' == 0 & !missing(`distvar')
@@ -1288,8 +1304,8 @@ if !_rc {
 capture drop long_wtr_time
 capture confirm variable ph_wtr_time
 if !_rc {
-    quietly summarize ph_wtr_time if !missing(ph_wtr_time), detail
-    gen long_wtr_time = (ph_wtr_time > r(p50)) if !missing(ph_wtr_time)
+    * Long collection: >30 min (code 2); valid comparison codes are 0 and 1.
+    gen byte long_wtr_time = (ph_wtr_time == 2) if inlist(ph_wtr_time, 0, 1, 2)
 }
 
 tempfile f4si_base
