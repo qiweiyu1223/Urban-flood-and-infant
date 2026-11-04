@@ -6,6 +6,10 @@ do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加
 * ============================================================
 use "$data/KR_PR_Africa_4.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 **# Weights
 cap drop wt wt_norm sum_wt_survey wt_equal_survey
 

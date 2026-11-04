@@ -6,7 +6,7 @@ do "E:/桌面/儿童发烧-do文件/02_code/01_data_processing/1 数据前的加
 * ============================================================
 **# Load Africa data
 * ============================================================
-use "$data/KR_PR_Africa_4_2.dta", clear
+use "$data/KR_PR_Africa_4.dta", clear
 
 **# 2. Survey weight and interview timing
 gen wt = v005 / 1000000
