@@ -20,6 +20,10 @@ global result "$dir/3 experiment/6 result or table"
 
 use "$data/KR_PR_Africa_3_new.dta", clear
 
+* Water collection is coded 0=on premises, 1=<=30 min, 2=>30 min.
+* Code 3 (don't know) and the unresolved code 995 are missing.
+replace ph_wtr_time = . if inlist(ph_wtr_time, 3, 995)
+
 rename hospital_total_flooded_count_3m  hosp_flood_3m
 rename hospital_total_flooded_count_6m  hosp_flood_6m
 rename hospital_total_flooded_count_9m  hosp_flood_9m
@@ -80,7 +84,7 @@ capture drop log1_water_distance_km
 gen log1_water_distance_km = ln(1 + water_distance_km) ///
     if !missing(water_distance_km)
 
-* 取水时间：如果 ph_wtr_time 是分钟，且没有特殊异常编码，可以这样处理
+* Log transform of the cleaned water-collection category code (not minutes).
 capture drop log1_ph_wtr_time
 gen log1_ph_wtr_time = ln(1 + ph_wtr_time) ///
     if !missing(ph_wtr_time) & ph_wtr_time >= 0
